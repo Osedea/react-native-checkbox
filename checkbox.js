@@ -14,15 +14,17 @@ var {
 
 var CheckBox = React.createClass({
   propTypes: {
-    label: PropTypes.string,
-    labelStyle: PropTypes.oneOfType([PropTypes.object,PropTypes.number]),
-    checkboxStyle: PropTypes.oneOfType([PropTypes.object,PropTypes.number]),
-    containerStyle: PropTypes.oneOfType([PropTypes.object,PropTypes.number]),
+    checkboxStyle: Image.propTypes.style,
     checked: PropTypes.bool,
     checkedImage: PropTypes.number,
+    containerStyle: View.propTypes.style,
+    label: PropTypes.string,
+    labelContainerStyle: View.propTypes.style,
+    labelStyle: Text.propTypes.style,
+    onChange: PropTypes.func,
+    touchableStyle: TouchableHighlight.propTypes.style,
     uncheckedImage: PropTypes.number,
     underlayColor: PropTypes.string,
-    onChange: PropTypes.func
   },
 
   getDefaultProps() {
@@ -50,31 +52,77 @@ var CheckBox = React.createClass({
     }
 
     var container = (
-      <View style={this.props.containerStyle || styles.container}>
+      <View
+        style={[
+          styles.container,
+          this.props.containerStyle
+        ]}
+      >
         <Image
-          style={this.props.checkboxStyle || styles.checkbox}
-          source={source}/>
-        <View style={styles.labelContainer}>
-          <Text style={[styles.label, this.props.labelStyle]}>{this.props.label}</Text>
+          style={[
+            styles.checkbox,
+            this.props.checkboxStyle
+          ]}
+          source={source}
+        />
+        <View
+          style={[
+            styles.labelContainer,
+            this.props.labelContainerStyle
+          ]}
+        >
+          <Text
+            style={[
+              styles.label,
+              this.props.labelStyle
+            ]}
+          >
+            {this.props.label}
+          </Text>
         </View>
       </View>
     );
 
     if (this.props.labelBefore) {
       container = (
-        <View style={this.props.containerStyle || styles.container}>
-          <View style={styles.labelContainer}>
-            <Text style={[styles.label, this.props.labelStyle]}>{this.props.label}</Text>
+        <View
+          style={[
+            this.props.containerStyle,
+            styles.container
+          ]}
+        >
+          <View
+            style={[
+              styles.labelContainer,
+              this.props.labelContainerStyle
+            ]}
+          >
+            <Text
+              style={[
+                styles.label,
+                this.props.labelStyle
+              ]}
+            >
+              {this.props.label}
+            </Text>
           </View>
           <Image
-            style={this.props.checkboxStyle || styles.checkbox}
-            source={source}/>
+            style={[
+              styles.checkbox,
+              this.props.checkboxStyle
+            ]}
+            source={source}
+          />
         </View>
       );
     }
 
     return (
-      <TouchableHighlight onPress={this.onChange} underlayColor={this.props.underlayColor}>
+      <TouchableHighlight
+        onPress={this.onChange}
+        underlayColor={this.props.underlayColor}
+        style={this.props.touchableStyle}
+      >
         {container}
       </TouchableHighlight>
     )
